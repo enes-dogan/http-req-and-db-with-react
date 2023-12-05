@@ -44,6 +44,8 @@ export interface PlacesProps {
   places: AvaiablePlaces;
   fallbackText?: string;
   onSelectPlace: (id: string) => void;
+  isLoading?: boolean;
+  loadingText?: string;
 }
 
 export interface DeleteConfirmationProps {
@@ -53,4 +55,10 @@ export interface DeleteConfirmationProps {
 
 export interface AvailablePlacesProps {
   onSelectPlace: (selectedPlace: AvaiablePlace | undefined) => void;
+}
+
+export interface ErrorProps {
+  title: string;
+  message: string;
+  onConfirm?: () => void;
 }
