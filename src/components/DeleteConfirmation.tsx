@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
+
 import { DeleteConfirmationProps } from '../types';
 
-import ProgressBar from './ProgressBar';
+import ProgressBar from './ProgressBar.tsx';
 
 const TIMER = 3000;
 

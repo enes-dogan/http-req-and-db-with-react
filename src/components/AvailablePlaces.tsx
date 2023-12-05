@@ -1,47 +1,47 @@
 import { useState, useEffect } from 'react';
+
 import { AvailablePlacesProps } from '../types';
 import { AvaiablePlace } from '../types';
-import { sortPlacesByDistance } from '../loc';
 
-import Places from './Places';
-import Error from './Error';
+import { sortPlacesByDistance } from '../loc';
+import { fetchAvailablePlaces } from '../http';
+
+import Places from './Places.tsx';
+import Error from './Error.tsx';
 
 export default function AvailablePlaces({
   onSelectPlace,
 }: AvailablePlacesProps) {
   const [isFetching, setIsFetching] = useState(false);
-  const [availablePlaces, setAvailablePlaces] = useState<AvaiablePlace>([]);
-  const [error, setError] = useState<{ message: string }>({ message: '' });
+  const [availablePlaces, setAvailablePlaces] = useState<AvaiablePlace[]>([]);
+  const [error, setError] = useState<{ message: string }>();
 
   useEffect(() => {
-    setIsFetching(true);
     async function fetchData() {
+      setIsFetching(true);
+
       try {
-        const response = await fetch('http://localhost:3000/places');
-        const resData = (await response.json()) as { places: AvaiablePlace };
+        const places = await fetchAvailablePlaces();
 
         navigator.geolocation.getCurrentPosition(position => {
           const lat = position.coords.latitude;
           const lon = position.coords.longitude;
 
-          const sortedPlaces = sortPlacesByDistance(resData.places, lat, lon);
+          const sortedPlaces = sortPlacesByDistance(places, lat, lon);
           setAvailablePlaces(sortedPlaces);
+          setIsFetching(false);
         });
-      } catch (error: any) {
-        console.error(error);
+      } catch (error) {
         setError({
-          message:
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            (error.message as string) ||
-            'Could not fetch places, please try again later.',
+          message: 'Could not fetch places, please try again later.',
         });
+        setIsFetching(false);
       }
-      setIsFetching(false);
     }
     void fetchData();
   }, []);
 
-  if (error.message.length > 0) {
+  if (error) {
     return (
       <Error
         title="Failed to load places."
@@ -58,7 +58,7 @@ export default function AvailablePlaces({
       fallbackText="No places available."
       isLoading={isFetching}
       loadingText="Loading places..."
-      onSelectPlace={() => onSelectPlace(undefined)}
+      onSelectPlace={onSelectPlace}
     />
   );
 }

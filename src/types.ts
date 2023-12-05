@@ -7,18 +7,7 @@ export type AvaiablePlace = {
   };
   lat?: number;
   lon?: number;
-}[];
-
-export type AvaiablePlaces = {
-  id: string;
-  title: string;
-  image: {
-    src: string;
-    alt: string;
-  };
-  lat?: number;
-  lon?: number;
-}[];
+};
 
 export type CalculateDistance = (
   lat1: number,
@@ -28,10 +17,10 @@ export type CalculateDistance = (
 ) => number;
 
 export type SortPlacesByDistance = (
-  places: AvaiablePlaces,
+  places: AvaiablePlace[],
   lat: number,
   lon: number
-) => AvaiablePlaces;
+) => AvaiablePlace[];
 
 export interface ModalProps {
   children: React.ReactNode;
@@ -41,9 +30,9 @@ export interface ModalProps {
 
 export interface PlacesProps {
   title: string;
-  places: AvaiablePlaces;
+  places: AvaiablePlace[];
   fallbackText?: string;
-  onSelectPlace: (id: string) => void;
+  onSelectPlace: (place: AvaiablePlace) => void;
   isLoading?: boolean;
   loadingText?: string;
 }
@@ -54,7 +43,7 @@ export interface DeleteConfirmationProps {
 }
 
 export interface AvailablePlacesProps {
-  onSelectPlace: (selectedPlace: AvaiablePlace | undefined) => void;
+  onSelectPlace: (place: AvaiablePlace) => void;
 }
 
 export interface ErrorProps {

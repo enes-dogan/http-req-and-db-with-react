@@ -1,21 +1,21 @@
 import { useRef, useState, useCallback } from 'react';
-import { AvaiablePlaces } from './types';
 import { AvaiablePlace } from './types';
 
-import Places from './components/Places';
-import Modal from './components/Modal';
-import DeleteConfirmation from './components/DeleteConfirmation';
+import Places from './components/Places.tsx';
+import Modal from './components/Modal.tsx';
+import DeleteConfirmation from './components/DeleteConfirmation.tsx';
+import AvailablePlaces from './components/AvailablePlaces.tsx';
+
 import logoImg from './assets/logo.png';
-import AvailablePlaces from './components/AvailablePlaces';
 
 function App() {
-  const selectedPlace = useRef<string>();
+  const selectedPlace = useRef<AvaiablePlace>();
 
-  const [userPlaces, setUserPlaces] = useState<AvaiablePlaces>([]);
+  const [userPlaces, setUserPlaces] = useState<AvaiablePlace[]>([]);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  function handleStartRemovePlace(place: string) {
+  function handleStartRemovePlace(place: AvaiablePlace) {
     setModalIsOpen(true);
     selectedPlace.current = place;
   }
@@ -36,7 +36,8 @@ function App() {
     });
   }
 
-  const handleRemovePlace = useCallback(async function handleRemovePlace() {
+  const handleRemovePlace = useCallback(() => {
+    // deleted async for now
     setUserPlaces(prevPickedPlaces =>
       prevPickedPlaces.filter(place => place.id !== selectedPlace.current!.id)
     );
