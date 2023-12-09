@@ -6,6 +6,7 @@ import Modal from './components/Modal.tsx';
 import DeleteConfirmation from './components/DeleteConfirmation.tsx';
 import AvailablePlaces from './components/AvailablePlaces.tsx';
 
+import { updateUserPlaces } from './http.ts';
 import logoImg from './assets/logo.png';
 
 function App() {
@@ -34,16 +35,38 @@ function App() {
       }
       return [selectedPlace, ...prevPickedPlaces];
     });
+
+    async function updatePlaces() {
+      try {
+        await updateUserPlaces([...userPlaces, selectedPlace]);
+      } catch (error) {
+        setUserPlaces(userPlaces);
+        console.error(error);
+      }
+    }
+    void updatePlaces();
   }
 
-  const handleRemovePlace = useCallback(() => {
-    // deleted async for now
-    setUserPlaces(prevPickedPlaces =>
-      prevPickedPlaces.filter(place => place.id !== selectedPlace.current!.id)
-    );
+  const handleRemovePlace = useCallback(
+    async function handleRemovePlace() {
+      setUserPlaces(prevPickedPlaces => {
+        return prevPickedPlaces.filter(
+          place => place.id !== selectedPlace.current!.id
+        );
+      });
 
-    setModalIsOpen(false);
-  }, []);
+      try {
+        await updateUserPlaces(
+          userPlaces.filter(place => place.id !== selectedPlace.current!.id)
+        );
+      } catch (error) {
+        console.error(error);
+      }
+
+      setModalIsOpen(false);
+    },
+    [userPlaces]
+  );
 
   return (
     <>

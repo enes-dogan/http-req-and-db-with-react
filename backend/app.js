@@ -12,8 +12,6 @@ app.use(bodyParser.json());
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*'); // allow all domains
-  res.setHeader('Access-Control-Allow-Methods', 'GET, PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   next();
 });
@@ -31,7 +29,7 @@ app.get('/user-places', async (req, res) => {
 
   const places = JSON.parse(fileContent);
 
-  res.status(200).json({ places });
+  res.status(200).json({ places: places });
 });
 
 app.put('/user-places', async (req, res) => {

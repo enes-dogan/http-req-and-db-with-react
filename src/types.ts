@@ -38,7 +38,7 @@ export interface PlacesProps {
 }
 
 export interface DeleteConfirmationProps {
-  onConfirm: () => void;
+  onConfirm: () => Promise<void>;
   onCancel: () => void;
 }
 
