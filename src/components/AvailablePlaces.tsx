@@ -4,7 +4,7 @@ import { AvailablePlacesProps } from '../types';
 import { AvaiablePlace } from '../types';
 
 import { sortPlacesByDistance } from '../loc';
-import { fetchAvailablePlaces } from '../http';
+import { fetchPlaces } from '../http';
 
 import Places from './Places.tsx';
 import Error from './Error.tsx';
@@ -21,7 +21,7 @@ export default function AvailablePlaces({
       setIsFetching(true);
 
       try {
-        const places = await fetchAvailablePlaces();
+        const places = await fetchPlaces();
 
         navigator.geolocation.getCurrentPosition(position => {
           const lat = position.coords.latitude;

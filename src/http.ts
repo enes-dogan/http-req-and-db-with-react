@@ -1,11 +1,11 @@
 import { AvaiablePlace } from './types';
 
-export async function fetchAvailablePlaces() {
-  const response = await fetch('http://localhost:3000/places');
+export async function fetchPlaces(url = 'places') {
+  const response = await fetch(`http://localhost:3000/${url}`);
   const resData = (await response.json()) as { places: AvaiablePlace[] };
 
   if (!response.ok) {
-    throw new Error('Failed to fetch places');
+    throw new Error(`Failed to fetch ${url}`);
   }
 
   return resData.places;

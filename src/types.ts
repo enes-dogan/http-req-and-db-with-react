@@ -31,14 +31,14 @@ export interface ModalProps {
 export interface PlacesProps {
   title: string;
   places: AvaiablePlace[];
-  fallbackText?: string;
+  fallbackText: string;
   onSelectPlace: (place: AvaiablePlace) => void;
-  isLoading?: boolean;
-  loadingText?: string;
+  isLoading: boolean;
+  loadingText: string;
 }
 
 export interface DeleteConfirmationProps {
-  onConfirm: () => Promise<void>;
+  onConfirm: () => void;
   onCancel: () => void;
 }
 

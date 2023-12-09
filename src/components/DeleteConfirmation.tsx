@@ -11,9 +11,7 @@ export default function DeleteConfirmation({
   onCancel,
 }: DeleteConfirmationProps) {
   useEffect(() => {
-    const timer = setTimeout(() => {
-      onConfirm();
-    }, TIMER);
+    const timer = setTimeout(onConfirm, TIMER);
 
     return () => {
       clearTimeout(timer);
