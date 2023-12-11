@@ -1,4 +1,7 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
+
+import { useFetch } from './hooks/useFetch.tsx';
+
 import { AvailablePlace } from './types';
 
 import Modal from './components/Modal.tsx';
@@ -17,27 +20,42 @@ function App() {
   const [errorUpdatingPlaces, setErrorUpdatingPlaces] = useState({
     message: '',
   });
-  const [isFetching, setIsFetching] = useState(false);
-  const [error, setError] = useState<{ message: string }>();
+
+  // const [isFetching, setIsFetching] = useState(false);
+  // const [error, setError] = useState<{ message: string }>();
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  useEffect(() => {
-    async function fetchData() {
-      setIsFetching(true);
-      try {
-        const places = await fetchPlaces('user-places');
-        setUserPlaces(places);
-      } catch (error) {
-        console.error(error);
-        setError({
-          message: 'Could not fetch user places, please try again later.',
-        });
-      }
-      setIsFetching(false);
-    }
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     setIsFetching(true);
 
-    void fetchData();
-  }, []);
+  //     try {
+  //       const places = await fetchPlaces('user-places');
+  //       setUserPlaces(places);
+  //     } catch (error) {
+  //       console.error(error);
+  //       setError({
+  //         message: 'Could not fetch user places, please try again later.',
+  //       });
+  //     }
+  //     setIsFetching(false);
+  //   }
+
+  //   void fetchData();
+  // }, []);
+
+  // !
+  const { isFetching, error, fetchedData, setError } = useFetch(
+    'user-places',
+    []
+  );
+  // !
+
+  useEffect(() => {
+    setUserPlaces(fetchedData);
+    setModalIsOpen(false);
+    console.log(fetchedData);
+  }, [fetchedData]);
 
   function handleStartRemovePlace(place: AvailablePlace) {
     setModalIsOpen(true);
@@ -127,14 +145,14 @@ function App() {
         </p>
       </header>
       <main>
-        {error && (
+        {error.message !== '' && (
           <Error
             title="Failed to load user places"
             message={error.message}
             onConfirm={() => setError({ message: '' })}
           />
         )}
-        {!error && (
+        {error.message === '' && (
           <Places
             title="I'd like to visit ..."
             fallbackText="Select the places you would like to visit below."

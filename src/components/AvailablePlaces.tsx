@@ -22,21 +22,19 @@ export default function AvailablePlaces({
 
       try {
         const places = await fetchPlaces();
-
         navigator.geolocation.getCurrentPosition(position => {
           const lat = position.coords.latitude;
           const lon = position.coords.longitude;
 
           const sortedPlaces = sortPlacesByDistance(places, lat, lon);
           setAvailablePlaces(sortedPlaces);
-          setIsFetching(false);
         });
       } catch (error) {
         setError({
           message: 'Could not fetch places, please try again later.',
         });
-        setIsFetching(false);
       }
+      setIsFetching(false);
     }
     void fetchData();
   }, []);

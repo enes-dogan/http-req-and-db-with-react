@@ -1,7 +1,7 @@
 import { AvailablePlace } from './types';
 
 export async function fetchPlaces(url = 'places') {
-  const response = await fetch(`http://localhost:3000/${url}`);
+  const response = await fetch('http://localhost:3000/' + url);
   const resData = (await response.json()) as { places: AvailablePlace[] };
 
   if (!response.ok) {

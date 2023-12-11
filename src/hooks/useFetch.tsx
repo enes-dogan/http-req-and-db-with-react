@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { AvailablePlace } from '../types';
+
 import { fetchPlaces } from '../http';
+import { AvailablePlace } from '../types';
 
 export function useFetch(
   fetchParam: string,
@@ -11,7 +12,7 @@ export function useFetch(
   const [fetchedData, setFetchedData] = useState<AvailablePlace[]>(initialData);
 
   useEffect(() => {
-    async function fetchData() {
+    async function fetchFn() {
       setIsFetching(true);
       try {
         const data = await fetchPlaces(fetchParam);
@@ -19,14 +20,14 @@ export function useFetch(
       } catch (error) {
         console.error(error);
         setError({
-          message: `Could not fetch ${fetchParam}, please try again later.`,
+          message: 'Error occured, please try again later.',
         });
       }
       setIsFetching(false);
     }
 
-    void fetchData();
+    void fetchFn();
   }, [fetchParam]);
 
-  return { isFetching, error, fetchedData };
+  return { isFetching, error, fetchedData, setError };
 }
