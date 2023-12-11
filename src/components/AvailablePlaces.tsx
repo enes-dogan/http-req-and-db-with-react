@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { AvailablePlacesProps } from '../types';
-import { AvaiablePlace } from '../types';
+import { AvailablePlace } from '../types';
 
 import { sortPlacesByDistance } from '../loc';
 import { fetchPlaces } from '../http';
@@ -13,7 +13,7 @@ export default function AvailablePlaces({
   onSelectPlace,
 }: AvailablePlacesProps) {
   const [isFetching, setIsFetching] = useState(false);
-  const [availablePlaces, setAvailablePlaces] = useState<AvaiablePlace[]>([]);
+  const [availablePlaces, setAvailablePlaces] = useState<AvailablePlace[]>([]);
   const [error, setError] = useState<{ message: string }>();
 
   useEffect(() => {

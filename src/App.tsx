@@ -1,5 +1,5 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
-import { AvaiablePlace } from './types';
+import { AvailablePlace } from './types';
 
 import Modal from './components/Modal.tsx';
 import Error from './components/Error.tsx';
@@ -11,9 +11,9 @@ import { fetchPlaces, updateUserPlaces } from './http.ts';
 import logoImg from './assets/logo.png';
 
 function App() {
-  const selectedPlace = useRef<AvaiablePlace>();
+  const selectedPlace = useRef<AvailablePlace>();
 
-  const [userPlaces, setUserPlaces] = useState<AvaiablePlace[]>([]);
+  const [userPlaces, setUserPlaces] = useState<AvailablePlace[]>([]);
   const [errorUpdatingPlaces, setErrorUpdatingPlaces] = useState({
     message: '',
   });
@@ -39,7 +39,7 @@ function App() {
     void fetchData();
   }, []);
 
-  function handleStartRemovePlace(place: AvaiablePlace) {
+  function handleStartRemovePlace(place: AvailablePlace) {
     setModalIsOpen(true);
     selectedPlace.current = place;
   }
@@ -48,7 +48,7 @@ function App() {
     setModalIsOpen(false);
   }
 
-  function handleSelectPlace(selectedPlace: AvaiablePlace) {
+  function handleSelectPlace(selectedPlace: AvailablePlace) {
     setUserPlaces(prevPickedPlaces => {
       if (!prevPickedPlaces) {
         prevPickedPlaces = [];

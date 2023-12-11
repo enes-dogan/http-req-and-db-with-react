@@ -1,4 +1,4 @@
-export type AvaiablePlace = {
+export type AvailablePlace = {
   id: string;
   title: string;
   image: {
@@ -17,10 +17,10 @@ export type CalculateDistance = (
 ) => number;
 
 export type SortPlacesByDistance = (
-  places: AvaiablePlace[],
+  places: AvailablePlace[],
   lat: number,
   lon: number
-) => AvaiablePlace[];
+) => AvailablePlace[];
 
 export interface ModalProps {
   children: React.ReactNode;
@@ -30,9 +30,9 @@ export interface ModalProps {
 
 export interface PlacesProps {
   title: string;
-  places: AvaiablePlace[];
+  places: AvailablePlace[];
   fallbackText: string;
-  onSelectPlace: (place: AvaiablePlace) => void;
+  onSelectPlace: (place: AvailablePlace) => void;
   isLoading: boolean;
   loadingText: string;
 }
@@ -43,7 +43,7 @@ export interface DeleteConfirmationProps {
 }
 
 export interface AvailablePlacesProps {
-  onSelectPlace: (place: AvaiablePlace) => void;
+  onSelectPlace: (place: AvailablePlace) => void;
 }
 
 export interface ErrorProps {

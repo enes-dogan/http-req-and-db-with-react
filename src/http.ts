@@ -1,8 +1,8 @@
-import { AvaiablePlace } from './types';
+import { AvailablePlace } from './types';
 
 export async function fetchPlaces(url = 'places') {
   const response = await fetch(`http://localhost:3000/${url}`);
-  const resData = (await response.json()) as { places: AvaiablePlace[] };
+  const resData = (await response.json()) as { places: AvailablePlace[] };
 
   if (!response.ok) {
     throw new Error(`Failed to fetch ${url}`);
@@ -11,7 +11,7 @@ export async function fetchPlaces(url = 'places') {
   return resData.places;
 }
 
-export async function updateUserPlaces(places: AvaiablePlace[]) {
+export async function updateUserPlaces(places: AvailablePlace[]) {
   const response = await fetch('http://localhost:3000/user-places', {
     method: 'PUT',
     body: JSON.stringify({ places }),
