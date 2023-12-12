@@ -29,5 +29,5 @@ export function useFetch(
     void fetchFn();
   }, [fetchParam]);
 
-  return { isFetching, error, fetchedData, setError };
+  return { isFetching, error, setError, fetchedData, setFetchedData };
 }

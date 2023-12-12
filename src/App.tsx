@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect } from 'react';
+import { useRef, useState, useCallback } from 'react';
 
 import { useFetch } from './hooks/useFetch.tsx';
 
@@ -10,52 +10,25 @@ import DeleteConfirmation from './components/DeleteConfirmation.tsx';
 import Places from './components/Places.tsx';
 import AvailablePlaces from './components/AvailablePlaces.tsx';
 
-import { fetchPlaces, updateUserPlaces } from './http.ts';
+import { updateUserPlaces } from './http.ts';
 import logoImg from './assets/logo.png';
 
 function App() {
   const selectedPlace = useRef<AvailablePlace>();
 
-  const [userPlaces, setUserPlaces] = useState<AvailablePlace[]>([]);
   const [errorUpdatingPlaces, setErrorUpdatingPlaces] = useState({
     message: '',
   });
-
-  // const [isFetching, setIsFetching] = useState(false);
-  // const [error, setError] = useState<{ message: string }>();
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     setIsFetching(true);
-
-  //     try {
-  //       const places = await fetchPlaces('user-places');
-  //       setUserPlaces(places);
-  //     } catch (error) {
-  //       console.error(error);
-  //       setError({
-  //         message: 'Could not fetch user places, please try again later.',
-  //       });
-  //     }
-  //     setIsFetching(false);
-  //   }
-
-  //   void fetchData();
-  // }, []);
-
-  // !
-  const { isFetching, error, fetchedData, setError } = useFetch(
-    'user-places',
-    []
-  );
-  // !
-
-  useEffect(() => {
-    setUserPlaces(fetchedData);
-    setModalIsOpen(false);
-    console.log(fetchedData);
-  }, [fetchedData]);
+  // Custom fetch hook
+  const {
+    isFetching,
+    error,
+    setError,
+    fetchedData: userPlaces,
+    setFetchedData: setUserPlaces,
+  } = useFetch('user-places', []);
 
   function handleStartRemovePlace(place: AvailablePlace) {
     setModalIsOpen(true);
@@ -112,7 +85,7 @@ function App() {
       setModalIsOpen(false);
     }
     void removePlace();
-  }, [userPlaces]);
+  }, [userPlaces, setUserPlaces]);
 
   return (
     <>
@@ -146,11 +119,16 @@ function App() {
       </header>
       <main>
         {error.message !== '' && (
-          <Error
-            title="Failed to load user places"
-            message={error.message}
-            onConfirm={() => setError({ message: '' })}
-          />
+          <Modal
+            open={error.message !== ''}
+            onClose={() => setError({ message: '' })}
+          >
+            <Error
+              title="Failed to load user places"
+              message={error.message}
+              onConfirm={() => setError({ message: '' })}
+            />
+          </Modal>
         )}
         {error.message === '' && (
           <Places
