@@ -1,51 +1,42 @@
-import { useState, useEffect } from 'react';
+import { useFetch } from '../hooks/useFetch.tsx';
+import { sortPlacesByDistance } from '../loc';
 
 import { AvailablePlacesProps } from '../types';
-import { AvailablePlace } from '../types';
 
-import { sortPlacesByDistance } from '../loc';
-import { fetchPlaces } from '../http';
-
-import Places from './Places.tsx';
+import Modal from './Modal.tsx';
 import Error from './Error.tsx';
+import Places from './Places.tsx';
 
 export default function AvailablePlaces({
   onSelectPlace,
 }: AvailablePlacesProps) {
-  const [isFetching, setIsFetching] = useState(false);
-  const [availablePlaces, setAvailablePlaces] = useState<AvailablePlace[]>([]);
-  const [error, setError] = useState<{ message: string }>();
+  const {
+    isFetching,
+    error,
+    setError,
+    fetchedData: availablePlaces,
+    setFetchedData: setAvailablePlaces,
+  } = useFetch('places', []);
 
-  useEffect(() => {
-    async function fetchData() {
-      setIsFetching(true);
+  navigator.geolocation.getCurrentPosition(position => {
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+    const sortedPlaces = sortPlacesByDistance(availablePlaces, lat, lon);
+    setAvailablePlaces(sortedPlaces);
+  });
 
-      try {
-        const places = await fetchPlaces();
-        navigator.geolocation.getCurrentPosition(position => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-
-          const sortedPlaces = sortPlacesByDistance(places, lat, lon);
-          setAvailablePlaces(sortedPlaces);
-        });
-      } catch (error) {
-        setError({
-          message: 'Could not fetch places, please try again later.',
-        });
-      }
-      setIsFetching(false);
-    }
-    void fetchData();
-  }, []);
-
-  if (error) {
+  if (error.message !== '') {
     return (
-      <Error
-        title="Failed to load places."
-        message={error.message}
-        onConfirm={() => setError({ message: '' })}
-      />
+      <Modal
+        open={error.message !== ''}
+        onClose={() => setError({ message: '' })}
+      >
+        <Error
+          title="Failed to load places."
+          message={error.message}
+          onConfirm={() => setError({ message: '' })}
+        />
+      </Modal>
     );
   }
 
