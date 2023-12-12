@@ -1,6 +1,6 @@
 import { useRef, useState, useCallback } from 'react';
 
-import { useFetch } from './hooks/useFetch.tsx';
+import { useFetch } from './hooks/useFetch.ts';
 
 import { AvailablePlace } from './types';
 
@@ -21,7 +21,6 @@ function App() {
   });
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  // Custom fetch hook
   const {
     isFetching,
     error,
@@ -40,6 +39,11 @@ function App() {
   }
 
   function handleSelectPlace(selectedPlace: AvailablePlace) {
+    const existingPlace = userPlaces.find(
+      place => place.id === selectedPlace.id
+    );
+    if (existingPlace) return;
+
     setUserPlaces(prevPickedPlaces => {
       if (!prevPickedPlaces) {
         prevPickedPlaces = [];

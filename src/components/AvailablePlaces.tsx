@@ -1,4 +1,4 @@
-import { useFetch } from '../hooks/useFetch.tsx';
+import { useFetch } from '../hooks/useFetch.ts';
 import { sortPlacesByDistance } from '../loc';
 
 import { AvailablePlacesProps } from '../types';
